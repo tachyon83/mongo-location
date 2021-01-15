@@ -17,9 +17,12 @@ router.get('/:name', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    console.log(req.body)
     Location.add(req.body)
-        .then(result => res.json(resHandler(result)))
+        // .then(result => res.json(resHandler(result)))
+        .then(result => {
+            console.log(result)
+            res.redirect('/')
+        })
         .catch(err => res.json(errHandler(err)))
 })
 
@@ -37,9 +40,22 @@ router.delete('/:name', (req, res) => {
 
 router.post('/findNearest', (req, res) => {
     Location.findNearest(req.body.lng, req.body.lat, req.body.maxDistance)
-        .then(list => res.json(resHandler(list)))
+        // .then(list => res.json(resHandler(list)))
+        .then(list => {
+            console.log(list)
+            res.redirect('/')
+        })
         .catch(err => res.json(errHandler(err)))
 })
 
+router.post('/findCircle', (req, res) => {
+    Location.findCircle(req.body.lng, req.body.lat, req.body.radius)
+        // .then(list => res.json(resHandler(list)))
+        .then(list => {
+            console.log(list)
+            res.redirect('/')
+        })
+        .catch(err => res.json(errHandler(err)))
+})
 
 module.exports = router
