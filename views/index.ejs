@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <title>네이버 지도 api 예제 : 간단 예제 : 클릭한 위치 위도·경도 보기 (클릭 이벤트 적용)</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 사용한 지도 Client ID : mn7cwsrvym 은 "localhost" 에서 테스트 용도로 사용할 수 있습니다. -->
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=mn7cwsrvym"></script>
+
+    <!-- 지도가 생성되는 div 영역, id 는 naverMap 으로 설정 -->
+    <div id="naverMap" style="margin:0 auto; width:1000px; max-width:100%; height:650px;"></div>
+    <!-- <div style="text-align:center; margin-top:10px;">
+        경도 : <input type="text" name="namp_lng" />
+        위도 : <input type="text" name="namp_lat" />
+    </div> -->
+
+    <div>맵에 찍은 장소 정보 등록</div>
+    <form action="/location" method="POST">
+        <label for="name">장소명: </label>
+        <input type="text" id="name" name="name" placeholder="name"><br>
+        <label for="address">주소: </label>
+        <input type="text" id="address" name="address" placeholder="address"><br>
+        <label for="lng">경도: </label>
+        <input type="text" id="lng" name="lng" placeholder="longitude"><br>
+        <label for="lat">위도: </label>
+        <input type="text" id="lat" name="lat" placeholder="latitude"><br>
+        <br>
+        <!-- <input type="submit" value="Submit"> -->
+        <button type="submit">Submit</button>
+    </form>
+
+    <br><br><br>
+
+    <div>맵에서 찍은 위치로부터 가장 가까운 장소 찾기</div>
+    <form action="/location/findNearest" method="POST">
+        <label for="lng">경도: </label>
+        <input type="text" id="lng" name="lng" placeholder="longitude"><br>
+        <label for="lat">위도: </label>
+        <input type="text" id="lat" name="lat" placeholder="latitude"><br>
+        <label for="maxDistance">최대 이격 거리: </label>
+        <input type="text" id="maxDistance" name="maxDistance" placeholder="maxDistance"><br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+
+        var nmap = new naver.maps.Map('naverMap', { // naverMap 값은 div 의 id 값
+            center: new naver.maps.LatLng(37.5782709, 126.9770043), // 지도 중앙 위치 : 위도, 경도 설정
+            // zoom: 1, // 줌 설정 : 1~14, 수치가 클수록 지도 확대(줌인), 이 옵션 생략시 기본값 9
+            zoom: 9,
+            zoomControl: true, // 줌 컨트롤 표시 (기본값 표시안함)
+            zoomControlOptions: { // 줌 컨트롤 오른쪽 위로 위치 설정
+                position: naver.maps.Position.TOP_RIGHT // 오른쪽 위로 설정값
+            },
+            mapTypeControl: true, // 일반ㆍ위성 지도보기 컨트롤 표시 (기본값 표시안함)
+        });
+
+
+        naver.maps.Event.addListener(nmap, 'click', function (e) {
+            // 제이쿼리 사용
+            $('[name=lng]').val(e.coord.lng()); // 경도
+            $('[name=lat]').val(e.coord.lat()); // 위도
+        });
+
+    </script>
+
+    <!-- 예제 종료 -->
+
+
+</body>
+
+</html>

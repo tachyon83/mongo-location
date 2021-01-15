@@ -13,8 +13,25 @@ const app = express();
 app.use(morgan('short'))
 app.use(express.json())
 app.set('port', process.env.PORT || 3001);
+app.use(express.static(__dirname + '/views'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
-app.use('/shop', require('./routers/shop'))
+app.use('/', (req, res) => {
+    req.app.render('index', (err, html) => {
+        if (err) {
+            res.end("<h1>EJS ERROR!</h1>");
+            return;
+        }
+        res.end(html);
+    })
+})
+app.post('/location', (req, res) => {
+    console.log('inside')
+    console.log(req.body)
+
+})
+// app.use('/location', require('./routers/location'))
 
 // 404
 app.use(function (req, res, next) {
