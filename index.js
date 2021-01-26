@@ -12,6 +12,7 @@ const router = express.Router();
 const app = express();
 app.use(morgan('short'))
 app.use(express.json())
+// to have an access to form data
 // Content-Type: application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }))
 app.set('port', process.env.PORT || 3001);
